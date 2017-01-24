@@ -5,6 +5,8 @@ The test app has two parts:
 - A node.js REST server with no dependencies that provides CRUD API for managing departments
 - JQuery app that displays a list of departments and let's the user manipulate it
 
+To see the project run `node server.js` in the project folder and open `http://localhost:8000` in any browser.
+
 ## Task Description
 You should add support for employees for the app, this means that:
 1. For each department there should be an option to add employee.
