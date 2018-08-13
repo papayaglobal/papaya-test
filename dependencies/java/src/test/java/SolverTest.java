@@ -6,16 +6,14 @@ public class SolverTest {
 
     @Test
     public void shouldSolveTheGivenDependencies() {
-        String[] actual = Solver.solve(new String[][]{
-                new String[]{"a", "b"},
-                new String[]{"b", "c"}
-        });
-
-        String[] expected = {"c", "b", "a"};
+        String[][] dependencies = {
+                {"a", "b"},
+                {"b", "c"}
+        };
 
         assertArrayEquals(
-                expected,
-                actual
+                new String[]{"c", "b", "a"},
+                Solver.solve(dependencies)
         );
     }
 
