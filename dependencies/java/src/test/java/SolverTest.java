@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 
 public class SolverTest {
@@ -11,9 +13,14 @@ public class SolverTest {
                 {"b", "c"}
         };
 
+        String[] expecteds = {"c", "b", "a"};
+        String[] actuals = Solver.solve(dependencies);
+        String failMsg = "expected " + Arrays.toString(actuals) + " to equal " + Arrays.toString(expecteds);
+
         assertArrayEquals(
-                new String[]{"c", "b", "a"},
-                Solver.solve(dependencies)
+                failMsg,
+                expecteds,
+                actuals
         );
     }
 
