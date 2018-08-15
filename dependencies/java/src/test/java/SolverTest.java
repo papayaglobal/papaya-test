@@ -13,14 +13,14 @@ public class SolverTest {
                 {"b", "c"}
         };
 
-        String[] expecteds = {"c", "b", "a"};
-        String[] actuals = Solver.solve(dependencies);
-        String failMsg = "expected " + Arrays.toString(actuals) + " to equal " + Arrays.toString(expecteds);
+        String[] expected = {"c", "b", "a"};
+        String[] actual = Solver.solve(dependencies);
+        String failMsg = "expected " + Arrays.toString(actual) + " to equal " + Arrays.toString(expected);
 
         assertArrayEquals(
                 failMsg,
-                expecteds,
-                actuals
+                expected,
+                actual
         );
     }
 
