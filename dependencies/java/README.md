@@ -24,7 +24,7 @@ Note:
 
 # Code
 Please provide the code in the `Solver` class, which currently simply returns a stub `Array<String>`.
-You're welcome to use the provided test and add to it as needed, see `SolverTest` class.
+You're welcome to use the provided (failing) test and add to it as needed, see `SolverTest` class.
 
 # Run
 Run the test using:
