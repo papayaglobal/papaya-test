@@ -19,12 +19,15 @@ Explanation:
 "a" depends on "b", so "b" must be resolved before "a"; And "b" depends on "c", so "c" is resolved before "b".
 
 Note:
+- Inputs are always provided as an Array of pairs of dependencies, just as described above.
 - There may be more than one solution to a given input.
 - It can be assumed that the input does not contain circular dependencies.
 
 # Code
 Please provide the code in the `Solver` class, which currently simply returns a stub `Array<String>`.
-You're welcome to use the provided (failing) test and add to it as needed, see `SolverTest` class.
+You're welcome to use the provided test and add to it as needed, see `SolverTest` class.
+Please note that the provided test does not account for the potential complexity of all kinds of inputs.
+The code should run and solve the given problem.
 
 # Run
 Run the test using:
