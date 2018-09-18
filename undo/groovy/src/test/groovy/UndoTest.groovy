@@ -1,3 +1,5 @@
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 import spock.lang.Specification
 
 class UndoTest extends Specification {
@@ -56,8 +58,8 @@ class UndoTest extends Specification {
         String state = "0"
         def append = { s ->
             [
-                    d: { -> state = state + s },
-                    u: { -> state = state - s }
+                    action       : { -> state = state + s },
+                    reverseAction: { -> state = state - s }
             ] as Undoable
         }
         def undo = new Undo()
@@ -72,25 +74,85 @@ class UndoTest extends Specification {
     }
 
     def 'should undo v5'() {
-        def undo = new Undo()
+        def u = new Undo()
         String state = ""
         def append = { s ->
-            undo.do([
-                    d: { -> state = state + s },
-                    u: { -> state = state.take(state.length() - s.length()) }
+            u.do([
+                    action       : { -> state = state + s },
+                    reverseAction: { -> state = state.take(state.length() - s.length()) }
             ] as Undoable)
         }
+        def undo = { u.undo() }
+        def redo = { u.redo() }
 
         when:
-        append("n")
-        append("i")
-        append("t")
-        append("z")
-        append("an")
+        "nitzan".each { append it }
         assert state == "nitzan"
-        undo.undo()
+        undo()
+        assert state == "nitza"
+        redo()
+        assert state == "nitzan"
+        3.times undo
+        assert state == "nit"
+        append "s"
+        assert state == "nits"
+        redo()
+        assert state == "nits"
+        undo()
+        assert state == "nit"
+        3.times redo
+        assert state == "nits"
+        append "a"
+        append "n"
+        assert state == "nitsan"
+        10.times undo
+        assert state == ""
+        10.times redo
 
         then:
-        state == "nitz"
+        state == "nitsan"
+    }
+
+    def 'should undo v6'() {
+        String string = ""
+        Subject<Undoable> undoable = PublishSubject.create()
+        def u = new Undo(4)
+        u.register undoable
+
+        def append = { s ->
+            undoable.onNext([
+                    action       : { string = string + s },
+                    reverseAction: { string = string.take(string.length() - s.length()) }
+            ] as Undoable)
+        }
+        def undo = { u.undo() }
+        def redo = { u.redo() }
+
+        when:
+        "nitzan".each { append it }
+        assert string == "nitzan"
+        undo()
+        assert string == "nitza"
+        redo()
+        assert string == "nitzan"
+        3.times undo
+        assert string == "nit"
+        append "s"
+        assert string == "nits"
+        redo()
+        assert string == "nits"
+        undo()
+        assert string == "nit"
+        3.times redo
+        assert string == "nits"
+        append "a"
+        append "n"
+        assert string == "nitsan"
+        10.times undo
+        assert string == "ni"
+        10.times redo
+
+        then:
+        string == "nitsan"
     }
 }
